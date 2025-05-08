@@ -5,9 +5,7 @@ import Game from "./components/Game"; // Importa o componente do jogo
 export default function App() {
   return (
     <div className="app-container">
-      {" "}
-      {/* Define um contêiner para o jogo */}
-      <Game /> {/* Renderiza o componente do jogo */}
+      <Game />
     </div>
   );
 }
