@@ -1,0 +1,21 @@
+.game-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.reset-button {
+  padding: 10px 20px;
+  margin-top: 15px;
+  background-color: green;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.app-container {
+  background-color: #eef2f7;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
