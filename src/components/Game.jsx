@@ -1,12 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
-import Board from './Board';
-import './Game.css';
+import React, { useEffect, useState, useRef } from "react";
+import Board from "./Board";
+import "./Game.css";
 
 const ROWS = 6;
 const COLS = 7;
-const MAX_TIME = 10;
+const MAX_TIME = 10; // tempo máximo por jogada (segundos)
 
-const createEmptyBoard = () => Array(ROWS).fill(null).map(() => Array(COLS).fill(null));
+const createEmptyBoard = () =>
+  Array(ROWS)
+    .fill(null)
+    .map(() => Array(COLS).fill(null));
 
 const generateSpecialCells = () => {
   const specials = new Set();
@@ -26,8 +29,6 @@ export default function Game() {
   const [timer, setTimer] = useState(0);
   const timerRef = useRef(null);
   const [skipTurn, setSkipTurn] = useState(false);
-  const [dropping, setDropping] = useState(false);
-  const [dropInfo, setDropInfo] = useState(null);
 
   const resetGame = () => {
     setBoard(createEmptyBoard());
@@ -36,8 +37,6 @@ export default function Game() {
     setSpecialCells(generateSpecialCells());
     setTimer(0);
     setSkipTurn(false);
-    setDropping(false);
-    setDropInfo(null);
     restartTimer();
   };
 
@@ -45,7 +44,10 @@ export default function Game() {
 
   const checkWinner = (board) => {
     const directions = [
-      [0, 1], [1, 0], [1, 1], [1, -1]
+      [0, 1],
+      [1, 0],
+      [1, 1],
+      [1, -1],
     ];
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
@@ -56,7 +58,14 @@ export default function Game() {
           for (let i = 1; i < 4; i++) {
             const nr = r + dr * i;
             const nc = c + dc * i;
-            if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS || board[nr][nc] !== current) break;
+            if (
+              nr < 0 ||
+              nr >= ROWS ||
+              nc < 0 ||
+              nc >= COLS ||
+              board[nr][nc] !== current
+            )
+              break;
             count++;
           }
           if (count === 4) return current;
@@ -72,7 +81,7 @@ export default function Game() {
     setTimer(0);
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
-      setTimer(prev => {
+      setTimer((prev) => {
         if (prev + 1 >= MAX_TIME) {
           clearInterval(timerRef.current);
           setSkipTurn(true);
@@ -84,12 +93,22 @@ export default function Game() {
   };
 
   const handleClick = (col) => {
-    if (winner || skipTurn || dropping) return;
-    const newBoard = board.map(row => [...row]);
+    if (winner || skipTurn) return;
+    const newBoard = board.map((row) => [...row]);
     for (let row = ROWS - 1; row >= 0; row--) {
       if (!newBoard[row][col]) {
-        setDropping(true);
-        setDropInfo({ row, col, currentPlayer: player });
+        newBoard[row][col] = player;
+        setBoard(newBoard);
+        const win = checkWinner(newBoard);
+        if (win) {
+          setWinner(win);
+          clearInterval(timerRef.current);
+          return;
+        }
+        if (!isSpecial(row, col)) {
+          nextPlayer();
+        }
+        restartTimer();
         return;
       }
     }
@@ -108,50 +127,17 @@ export default function Game() {
     }
   }, [skipTurn, winner]);
 
-  useEffect(() => {
-    if (dropInfo) {
-      let r = 0;
-      const dropInterval = setInterval(() => {
-        setBoard(prev => {
-          const temp = prev.map(row => [...row]);
-          if (r > 0 && r < ROWS) temp[r - 1][dropInfo.col] = null;
-          if (r < ROWS) temp[r][dropInfo.col] = dropInfo.currentPlayer;
-          return temp;
-        });
-
-        if (r === dropInfo.row) {
-          clearInterval(dropInterval);
-
-          const finalBoard = board.map(row => [...row]);
-          finalBoard[dropInfo.row][dropInfo.col] = dropInfo.currentPlayer;
-          const win = checkWinner(finalBoard);
-
-          if (win) {
-            setWinner(win);
-            clearInterval(timerRef.current);
-          } else {
-            if (!isSpecial(dropInfo.row, dropInfo.col)) {
-              nextPlayer();
-            }
-            restartTimer();
-          }
-
-          setDropping(false);
-          setDropInfo(null);
-        }
-
-        r++;
-      }, 100);
-    }
-  }, [dropInfo]);
-
   return (
     <div className="game-container">
       <h1>4 em Linha Especial</h1>
       <p>{winner ? `Jogador ${winner} venceu!` : `Vez do Jogador ${player}`}</p>
       <p>Tempo: {timer}s</p>
       <Board board={board} onClick={handleClick} specialCells={specialCells} />
-      {winner && <button className="reset-button" onClick={resetGame}>Jogar Novamente</button>}
+      {winner && (
+        <button className="reset-button" onClick={resetGame}>
+          Jogar Novamente
+        </button>
+      )}
     </div>
   );
 }
