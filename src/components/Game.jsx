@@ -2,15 +2,18 @@ import React, { useEffect, useState, useRef } from "react";
 import Board from "./Board";
 import "./Game.css";
 
+// Constantes para definir o número de linhas, colunas e o tempo máximo por jogada
 const ROWS = 6;
 const COLS = 7;
 const MAX_TIME = 10; // tempo máximo por jogada (segundos)
 
+// Função para criar um tabuleiro vazio
 const createEmptyBoard = () =>
   Array(ROWS)
     .fill(null)
     .map(() => Array(COLS).fill(null));
 
+// Função para gerar células especiais aleatórias
 const generateSpecialCells = () => {
   const specials = new Set();
   while (specials.size < 5) {
@@ -21,15 +24,18 @@ const generateSpecialCells = () => {
   return Array.from(specials);
 };
 
+// Componente principal do jogo
 export default function Game() {
+  // Estados para armazenar o tabuleiro, jogador atual, vencedor, células especiais, etc.
   const [board, setBoard] = useState(createEmptyBoard());
   const [player, setPlayer] = useState(1);
   const [winner, setWinner] = useState(null);
   const [specialCells, setSpecialCells] = useState(generateSpecialCells());
   const [timer, setTimer] = useState(0);
-  const timerRef = useRef(null);
+  const timerRef = useRef(null); // Referência para o temporizador
   const [skipTurn, setSkipTurn] = useState(false);
 
+  // Função para reiniciar o jogo
   const resetGame = () => {
     setBoard(createEmptyBoard());
     setPlayer(1);
@@ -40,19 +46,21 @@ export default function Game() {
     restartTimer();
   };
 
+  // Verifica se uma célula é especial
   const isSpecial = (row, col) => specialCells.includes(`${row},${col}`);
 
+  // Função para verificar se há um vencedor
   const checkWinner = (board) => {
     const directions = [
-      [0, 1],
-      [1, 0],
-      [1, 1],
-      [1, -1],
+      [0, 1], // Horizontal
+      [1, 0], // Vertical
+      [1, 1], // Diagonal principal
+      [1, -1], // Diagonal secundária
     ];
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
         const current = board[r][c];
-        if (!current) continue;
+        if (!current) continue; // Ignora células vazias
         for (let [dr, dc] of directions) {
           let count = 1;
           for (let i = 1; i < 4; i++) {
@@ -68,15 +76,17 @@ export default function Game() {
               break;
             count++;
           }
-          if (count === 4) return current;
+          if (count === 4) return current; // Retorna o jogador vencedor
         }
       }
     }
     return null;
   };
 
+  // Alterna para o próximo jogador
   const nextPlayer = () => setPlayer(player === 1 ? 2 : 1);
 
+  // Reinicia o temporizador
   const restartTimer = () => {
     setTimer(0);
     if (timerRef.current) clearInterval(timerRef.current);
@@ -84,7 +94,7 @@ export default function Game() {
       setTimer((prev) => {
         if (prev + 1 >= MAX_TIME) {
           clearInterval(timerRef.current);
-          setSkipTurn(true);
+          setSkipTurn(true); // Pula a vez do jogador se o tempo acabar
           return MAX_TIME;
         }
         return prev + 1;
@@ -92,8 +102,9 @@ export default function Game() {
     }, 1000);
   };
 
+  // Lida com o clique em uma coluna
   const handleClick = (col) => {
-    if (winner || skipTurn) return;
+    if (winner || skipTurn) return; // Ignora cliques se houver vencedor ou se for para pular a vez
     const newBoard = board.map((row) => [...row]);
     for (let row = ROWS - 1; row >= 0; row--) {
       if (!newBoard[row][col]) {
@@ -101,12 +112,12 @@ export default function Game() {
         setBoard(newBoard);
         const win = checkWinner(newBoard);
         if (win) {
-          setWinner(win);
+          setWinner(win); // Define o vencedor
           clearInterval(timerRef.current);
           return;
         }
         if (!isSpecial(row, col)) {
-          nextPlayer();
+          nextPlayer(); // Alterna para o próximo jogador se a célula não for especial
         }
         restartTimer();
         return;
@@ -114,11 +125,13 @@ export default function Game() {
     }
   };
 
+  // Efeito para iniciar o temporizador ao carregar o componente
   useEffect(() => {
     restartTimer();
     return () => clearInterval(timerRef.current);
   }, []);
 
+  // Efeito para lidar com a lógica de pular a vez
   useEffect(() => {
     if (skipTurn && !winner) {
       setSkipTurn(false);
@@ -127,6 +140,7 @@ export default function Game() {
     }
   }, [skipTurn, winner]);
 
+  // Renderiza o componente
   return (
     <div className="game-container">
       <h1>4 em Linha Especial</h1>
