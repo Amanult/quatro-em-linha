@@ -1,11 +1,19 @@
-import React from "react";
-import Game from "./components/Game"; // Importa o componente do jogo
+import React, { useState } from "react";
+import Game from "./components/Game";
+import StartScreen from "./components/StartScreen"; // Importa o componente da tela inicial
 
-// Componente principal da aplicação
 export default function App() {
+  const [gameStarted, setGameStarted] = useState(false);
+
+  const resetToStart = () => setGameStarted(false); // Função para voltar ao início
+
   return (
     <div className="app-container">
-      <Game />
+      {!gameStarted ? (
+        <StartScreen onStart={() => setGameStarted(true)} /> // Usa o novo componente
+      ) : (
+        <Game onBackToStart={resetToStart} /> // Passa a função para o componente Game
+      )}
     </div>
   );
 }

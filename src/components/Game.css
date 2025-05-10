@@ -19,3 +19,17 @@
   align-items: center;
   justify-content: center;
 }
+
+.back-button {
+  padding: 10px 20px;
+  margin-top: 15px;
+  margin-left: 10px;
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: darkred;
+}

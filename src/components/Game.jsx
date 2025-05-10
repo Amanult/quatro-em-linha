@@ -15,17 +15,29 @@ const createEmptyBoard = () =>
 
 // Função para gerar células especiais aleatórias
 const generateSpecialCells = () => {
-  const specials = new Set();
+  const specials = new Set(); // Set é um estrutura js que permite de garantir que cada elemento é unico
   while (specials.size < 5) {
+    /*
+    Math.random cria um numero entre [0;1[
+    Multiplicado por ROWS ou COLS permite obter um numero entre [0;R/C - 0.(1)[
+    Math.floor permite aredondar ao inteiro infrior 4.6 -> 4
+    No final obtemos um numero entre [0;R/C - 1[
+    */
     const row = Math.floor(Math.random() * ROWS);
     const col = Math.floor(Math.random() * COLS);
+    //Additionna a specials as coordenadas na forma de uma cadeia de characteres "row,col"
     specials.add(`${row},${col}`);
   }
+  // retorna um array formado a partir das coordenadas de specials
   return Array.from(specials);
 };
 
+// Função para verificar se o tabuleiro está cheio (empate)
+const isBoardFull = (board) =>
+  board.every((row) => row.every((cell) => cell !== null));
+
 // Componente principal do jogo
-export default function Game() {
+export default function Game({ onBackToStart }) {
   // Estados para armazenar o tabuleiro, jogador atual, vencedor, células especiais, etc.
   const [board, setBoard] = useState(createEmptyBoard());
   const [player, setPlayer] = useState(1);
@@ -116,6 +128,11 @@ export default function Game() {
           clearInterval(timerRef.current);
           return;
         }
+        if (isBoardFull(newBoard)) {
+          setWinner("Empate"); // Define empate se o tabuleiro estiver cheio
+          clearInterval(timerRef.current);
+          return;
+        }
         if (!isSpecial(row, col)) {
           nextPlayer(); // Alterna para o próximo jogador se a célula não for especial
         }
@@ -144,13 +161,24 @@ export default function Game() {
   return (
     <div className="game-container">
       <h1>4 em Linha Especial</h1>
-      <p>{winner ? `Jogador ${winner} venceu!` : `Vez do Jogador ${player}`}</p>
+      <p>
+        {winner
+          ? winner === "Empate"
+            ? "O jogo terminou em empate!"
+            : `Jogador ${winner} venceu!`
+          : `Vez do Jogador ${player}`}
+      </p>
       <p>Tempo: {timer}s</p>
       <Board board={board} onClick={handleClick} specialCells={specialCells} />
       {winner && (
-        <button className="reset-button" onClick={resetGame}>
-          Jogar Novamente
-        </button>
+        <div>
+          <button className="reset-button" onClick={resetGame}>
+            Jogar Novamente
+          </button>
+          <button className="back-button" onClick={onBackToStart}>
+            Voltar ao Início
+          </button>
+        </div>
       )}
     </div>
   );
