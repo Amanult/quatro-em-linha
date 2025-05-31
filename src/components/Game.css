@@ -112,3 +112,35 @@
   padding: 8px 0 6px 0;
   box-shadow: 0 1px 4px rgba(37,99,235,0.08);
 }
+
+.timeout-popup {
+  /* Pop-up centralizado para aviso de tempo esgotado.
+     - Fundo amarelo claro.
+     - Borda amarela.
+     - Texto vermelho escuro.
+     - Padding generoso e bordas arredondadas.
+     - Sombra para destacar.
+     - Z-index elevado para aparecer acima de tudo.
+     - Animação de fade-in para suavidade.
+  */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fef9c3;
+  color: #b91c1c;
+  border: 2px solid #facc15;
+  border-radius: 14px;
+  padding: 32px 38px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  box-shadow: 0 6px 32px rgba(0,0,0,0.18);
+  z-index: 1000;
+  text-align: center;
+  animation: popup-fade-in 0.2s;
+}
+
+@keyframes popup-fade-in {
+  from { opacity: 0; transform: translate(-50%, -60%);}
+  to { opacity: 1; transform: translate(-50%, -50%);}
+}

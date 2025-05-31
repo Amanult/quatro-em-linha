@@ -13,9 +13,10 @@ export default function StartScreen({ onStart }) {
     onStart({ mode, player1: name1, player2: name2 });
   };
 
-  // Inicia o jogo no modo CPU com nomes padrão
+  // Inicia o jogo no modo CPU com nome inserido ou padrão
   const handleStartCPU = () => {
-    onStart({ mode, player1: "Jogador 1", player2: "Computador" });
+    const name1 = player1.trim() || "Jogador 1";
+    onStart({ mode, player1: name1, player2: "Computador" });
   };
 
   // Volta ao menu de seleção de modo
@@ -81,9 +82,20 @@ export default function StartScreen({ onStart }) {
           </button>
         </div>
       )}
-      {/* Se modo CPU foi selecionado, mostra só o botão e o voltar */}
+      {/* Se modo CPU foi selecionado, pede nome do jogador e mostra botão e voltar */}
       {mode === "cpu" && (
         <div>
+          <div style={{ marginBottom: 18 }}>
+            <input
+              className="player-name-input"
+              type="text"
+              placeholder="Nome do Jogador"
+              value={player1}
+              onChange={(e) => setPlayer1(e.target.value)}
+              maxLength={18}
+              autoFocus
+            />
+          </div>
           <button onClick={handleStartCPU}>Começar Jogo</button>
           <button
             className="back-mode-btn"

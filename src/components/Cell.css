@@ -31,9 +31,13 @@
   }
   
   .cell.special {
-    /* Célula especial com outline e sombra azul */
-    box-shadow: 0 0 0 5px #2563eb inset, 0 0 12px 2px #60a5fa;
-    outline: 2px dashed #2563eb;
+    /* Apenas contorno verde para distinguir célula especial.
+       - box-shadow e outline verdes.
+       - Não altera o fundo da célula, mantendo a ficha visível.
+       - Facilita a identificação visual das células especiais sem confundir com as peças dos jogadores.
+    */
+    box-shadow: 0 0 0 5px #22c55e inset, 0 0 12px 2px #4ade80;
+    outline: 2px dashed #22c55e;
     outline-offset: 2px;
     transition: box-shadow 0.2s, outline 0.2s;
   }

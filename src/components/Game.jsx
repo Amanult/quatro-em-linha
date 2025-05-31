@@ -49,6 +49,7 @@ export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, pl
   const [fallingCell, setFallingCell] = useState(null);
   const [winningCells, setWinningCells] = useState([]);
   const [hoverCol, setHoverCol] = useState(null);
+  const [showTimeoutMsg, setShowTimeoutMsg] = useState(false); // novo estado para aviso de tempo
 
   // Função para reiniciar o jogo e resetar todos os estados relevantes
   const resetGame = () => {
@@ -114,7 +115,7 @@ export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, pl
       setTimer((prev) => {
         if (prev + 1 >= MAX_TIME) {
           clearInterval(timerRef.current);
-          setSkipTurn(true); // Pula a vez do jogador se o tempo acabar
+          setShowTimeoutMsg(true); // mostra aviso de tempo esgotado
           return MAX_TIME;
         }
         return prev + 1;
@@ -137,9 +138,9 @@ export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, pl
   // eslint-disable-next-line
   }, [board, winner, skipTurn]);
 
-  // handleClick modificado para aceitar flag isComputer (evita duplo nextPlayer)
+  // handleClick modificado para bloquear jogadas durante aviso de tempo
   const handleClick = (col, isComputer = false) => {
-    if (winner || skipTurn) return;
+    if (winner || skipTurn || showTimeoutMsg) return; // bloqueia jogadas durante aviso
     // Se for modo CPU e for vez do computador, só aceita jogada automática
     if (mode === "cpu" && player === 2 && !isComputer) return;
     const newBoard = board.map((row) => [...row]);
@@ -203,6 +204,17 @@ export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, pl
     }
   }, [skipTurn, winner]);
 
+  // Efeito para mostrar mensagem de tempo esgotado e só depois passar a vez
+  useEffect(() => {
+    if (showTimeoutMsg && !winner) {
+      const timeout = setTimeout(() => {
+        setShowTimeoutMsg(false);
+        setSkipTurn(true); // só depois do aviso passa a vez
+      }, 2000); // intervalo aumentado para 2s
+      return () => clearTimeout(timeout);
+    }
+  }, [showTimeoutMsg, winner]);
+
   // Chamar onGameEnd quando houver vencedor (para atualizar o score)
   useEffect(() => {
     if (winner && winner !== "Empate" && onGameEnd) {
@@ -230,6 +242,12 @@ export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, pl
             : `Vez do ${playerNames?.player2 || "Computador"}...`
           : `Vez de ${player === 1 ? playerNames?.player1 : playerNames?.player2}`}
       </p>
+      {/* Aviso pop-up de tempo esgotado */}
+      {showTimeoutMsg && (
+        <div className="timeout-popup">
+          <span>⏰ Tempo esgotado! A vez vai passar para o próximo jogador...</span>
+        </div>
+      )}
       {/* Barra de tempo animada */}
       <div className="timer-bar-container">
         <div
