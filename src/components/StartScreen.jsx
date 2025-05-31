@@ -5,7 +5,10 @@ export default function StartScreen({ onStart }) {
   return (
     <div className="start-screen">
       <h1>Bem-vindo ao 4 em Linha Especial</h1>
-      <button onClick={onStart}>Começar Jogo</button>
+      <button onClick={() => onStart(false)}>2 Jogadores</button>
+      <button style={{ marginLeft: 10 }} onClick={() => onStart(true)}>
+        Contra CPU
+      </button>
     </div>
   );
 }
