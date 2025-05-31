@@ -1,35 +1,114 @@
 .game-container {
+  /* Container principal do jogo, fundo suave e transições */
   text-align: center;
-  padding: 20px;
+  padding: 32px 20px 20px 20px;
+  background: rgba(248, 250, 252, 0.97); /* cor de fundo mais suave */
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15), 0 1.5px 6px rgba(0,0,0,0.08);
+  max-width: 480px;
+  margin: 40px auto;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.game-container h1 {
+  /* Título com cor azul consistente e transição */
+  font-size: 2.2rem;
+  color: #2563eb; /* azul consistente */
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  transition: color 0.3s;
+}
+
+.game-container p {
+  /* Texto informativo com cor suave */
+  font-size: 1.1rem;
+  color: #334155; /* cinza-azulado suave */
+  margin: 8px 0;
+  transition: color 0.3s;
+}
+
+.reset-button, .back-button {
+  /* Botões principais com transições suaves */
+  padding: 12px 28px;
+  margin-top: 18px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
 
 .reset-button {
-  padding: 10px 20px;
-  margin-top: 15px;
-  background-color: green;
-  color: white;
-  border: none;
-  cursor: pointer;
+  /* Botão de reset azul claro */
+  background-color: #38bdf8; /* azul claro */
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(56,189,248,0.10);
+}
+
+.reset-button:hover {
+  /* Hover do botão de reset */
+  background-color: #0ea5e9; /* azul mais escuro */
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.back-button {
+  /* Botão de voltar vermelho suave */
+  background-color: #f87171; /* vermelho suave */
+  color: #fff;
+  margin-left: 14px;
+  box-shadow: 0 2px 8px rgba(248,113,113,0.10);
+}
+
+.back-button:hover {
+  /* Hover do botão de voltar */
+  background-color: #ef4444; /* vermelho mais forte */
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
 }
 
 .app-container {
-  background-color: #eef2f7;
+  /* Container da aplicação, centraliza tudo */
+  background: none;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.back-button {
-  padding: 10px 20px;
-  margin-top: 15px;
-  margin-left: 10px;
-  background-color: red;
-  color: white;
-  border: none;
-  cursor: pointer;
+.timer-bar-container {
+  /* Barra de tempo com fundo suave e transição */
+  width: 80%;
+  height: 12px;
+  background: #e0e7ef; /* tom mais suave */
+  border-radius: 8px;
+  margin: 0 auto 8px auto;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(37,99,235,0.08);
+  transition: background 0.3s;
 }
 
-.back-button:hover {
-  background-color: darkred;
+.timer-bar {
+  /* Barra de progresso animada */
+  height: 100%;
+  transition: width 0.3s, background 0.3s;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #38bdf8 60%, #2563eb 100%);
+}
+
+.score-board {
+  /* ScoreBoard com fundo suave, azul e destaque */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  font-size: 1.15rem;
+  margin-bottom: 10px;
+  color: #2563eb;
+  font-weight: 600;
+  background: #e0e7ef;
+  border-radius: 8px;
+  padding: 8px 0 6px 0;
+  box-shadow: 0 1px 4px rgba(37,99,235,0.08);
 }

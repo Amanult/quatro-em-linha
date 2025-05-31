@@ -37,7 +37,7 @@ const isBoardFull = (board) =>
   board.every((row) => row.every((cell) => cell !== null));
 
 // Componente principal do jogo
-export default function Game({ onBackToStart }) {
+export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, playerNames }) {
   // Estados para armazenar o tabuleiro, jogador atual, vencedor, células especiais, etc.
   const [board, setBoard] = useState(createEmptyBoard());
   const [player, setPlayer] = useState(1);
@@ -46,8 +46,11 @@ export default function Game({ onBackToStart }) {
   const [timer, setTimer] = useState(0);
   const timerRef = useRef(null); // Referência para o temporizador
   const [skipTurn, setSkipTurn] = useState(false);
+  const [fallingCell, setFallingCell] = useState(null);
+  const [winningCells, setWinningCells] = useState([]);
+  const [hoverCol, setHoverCol] = useState(null);
 
-  // Função para reiniciar o jogo
+  // Função para reiniciar o jogo e resetar todos os estados relevantes
   const resetGame = () => {
     setBoard(createEmptyBoard());
     setPlayer(1);
@@ -55,13 +58,16 @@ export default function Game({ onBackToStart }) {
     setSpecialCells(generateSpecialCells());
     setTimer(0);
     setSkipTurn(false);
+    setFallingCell(null);
+    setWinningCells([]);
+    setHoverCol(null);
     restartTimer();
   };
 
   // Verifica se uma célula é especial
   const isSpecial = (row, col) => specialCells.includes(`${row},${col}`);
 
-  // Função para verificar se há um vencedor
+  // Função para verificar se há um vencedor e retornar as células vencedoras
   const checkWinner = (board) => {
     const directions = [
       [0, 1], // Horizontal
@@ -72,9 +78,10 @@ export default function Game({ onBackToStart }) {
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
         const current = board[r][c];
-        if (!current) continue; // Ignora células vazias
+        if (!current) continue;
         for (let [dr, dc] of directions) {
           let count = 1;
+          let cells = [[r, c]];
           for (let i = 1; i < 4; i++) {
             const nr = r + dr * i;
             const nc = c + dc * i;
@@ -86,9 +93,10 @@ export default function Game({ onBackToStart }) {
               board[nr][nc] !== current
             )
               break;
+            cells.push([nr, nc]);
             count++;
           }
-          if (count === 4) return current; // Retorna o jogador vencedor
+          if (count === 4) return { winner: current, cells };
         }
       }
     }
@@ -114,33 +122,71 @@ export default function Game({ onBackToStart }) {
     }, 1000);
   };
 
-  // Lida com o clique em uma coluna
-  const handleClick = (col) => {
-    if (winner || skipTurn) return; // Ignora cliques se houver vencedor ou se for para pular a vez
+  // Função para o computador jogar (movimento aleatório)
+  const computerMove = React.useCallback(() => {
+    if (winner) return;
+    // Encontrar colunas válidas (não cheias)
+    const validCols = [];
+    for (let col = 0; col < COLS; col++) {
+      if (board[0][col] === null) validCols.push(col);
+    }
+    if (validCols.length === 0) return;
+    // Escolher uma coluna aleatória e jogar
+    const randomCol = validCols[Math.floor(Math.random() * validCols.length)];
+    handleClick(randomCol, true); // true = isComputer
+  // eslint-disable-next-line
+  }, [board, winner, skipTurn]);
+
+  // handleClick modificado para aceitar flag isComputer (evita duplo nextPlayer)
+  const handleClick = (col, isComputer = false) => {
+    if (winner || skipTurn) return;
+    // Se for modo CPU e for vez do computador, só aceita jogada automática
+    if (mode === "cpu" && player === 2 && !isComputer) return;
     const newBoard = board.map((row) => [...row]);
     for (let row = ROWS - 1; row >= 0; row--) {
       if (!newBoard[row][col]) {
         newBoard[row][col] = player;
         setBoard(newBoard);
-        const win = checkWinner(newBoard);
-        if (win) {
-          setWinner(win); // Define o vencedor
+        setFallingCell({ row, col }); // ativa animação de queda
+        const winResult = checkWinner(newBoard);
+        if (winResult) {
+          setWinner(winResult.winner);
+          setWinningCells(winResult.cells); // ativa animação de vitória
           clearInterval(timerRef.current);
           return;
         }
         if (isBoardFull(newBoard)) {
-          setWinner("Empate"); // Define empate se o tabuleiro estiver cheio
+          setWinner("Empate");
+          setWinningCells([]);
           clearInterval(timerRef.current);
           return;
         }
         if (!isSpecial(row, col)) {
-          nextPlayer(); // Alterna para o próximo jogador se a célula não for especial
+          nextPlayer();
         }
         restartTimer();
         return;
       }
     }
   };
+
+  // Efeito: se for modo CPU e for vez do computador, faz jogada automática após pequeno delay
+  useEffect(() => {
+    if (mode === "cpu" && player === 2 && !winner && !skipTurn) {
+      const timeout = setTimeout(() => {
+        computerMove();
+      }, 600); // delay para parecer mais natural
+      return () => clearTimeout(timeout);
+    }
+  }, [mode, player, winner, skipTurn, computerMove]);
+
+  // Limpar fallingCell após animação (~450ms)
+  React.useEffect(() => {
+    if (fallingCell) {
+      const timeout = setTimeout(() => setFallingCell(null), 450);
+      return () => clearTimeout(timeout);
+    }
+  }, [fallingCell]);
 
   // Efeito para iniciar o temporizador ao carregar o componente
   useEffect(() => {
@@ -157,19 +203,54 @@ export default function Game({ onBackToStart }) {
     }
   }, [skipTurn, winner]);
 
+  // Chamar onGameEnd quando houver vencedor (para atualizar o score)
+  useEffect(() => {
+    if (winner && winner !== "Empate" && onGameEnd) {
+      onGameEnd(winner, mode);
+    }
+    // eslint-disable-next-line
+  }, [winner]);
+
   // Renderiza o componente
   return (
     <div className="game-container">
       <h1>4 em Linha Especial</h1>
+      {/* ScoreBoard mostra o score atual */}
+      <ScoreBoard score={score} mode={mode} playerNames={playerNames} />
       <p>
         {winner
           ? winner === "Empate"
             ? "O jogo terminou em empate!"
-            : `Jogador ${winner} venceu!`
-          : `Vez do Jogador ${player}`}
+            : mode === "cpu" && winner === 2
+            ? `${playerNames?.player2 || "Computador"} venceu!`
+            : `${winner === 1 ? playerNames?.player1 : playerNames?.player2} venceu!`
+          : mode === "cpu"
+          ? player === 1
+            ? `A tua vez!`
+            : `Vez do ${playerNames?.player2 || "Computador"}...`
+          : `Vez de ${player === 1 ? playerNames?.player1 : playerNames?.player2}`}
       </p>
+      {/* Barra de tempo animada */}
+      <div className="timer-bar-container">
+        <div
+          className="timer-bar"
+          style={{
+            width: `${(timer / MAX_TIME) * 100}%`,
+            background: timer > MAX_TIME * 0.7 ? "#ef4444" : "#2563eb",
+          }}
+        ></div>
+      </div>
       <p>Tempo: {timer}s</p>
-      <Board board={board} onClick={handleClick} specialCells={specialCells} />
+      {/* Tabuleiro com animações, hover, células especiais e células vencedoras */}
+      <Board
+        board={board}
+        onClick={handleClick}
+        specialCells={specialCells}
+        fallingCell={fallingCell}
+        winningCells={winningCells}
+        hoverCol={hoverCol}
+        setHoverCol={setHoverCol}
+      />
       {winner && (
         <div>
           <button className="reset-button" onClick={resetGame}>
@@ -179,6 +260,26 @@ export default function Game({ onBackToStart }) {
             Voltar ao Início
           </button>
         </div>
+      )}
+    </div>
+  );
+}
+
+// ScoreBoard Component: mostra o score dos jogadores ou do computador
+function ScoreBoard({ score, mode, playerNames }) {
+  return (
+    <div className="score-board">
+      <span>
+        {playerNames?.player1 || "Jogador 1"}: <b>{score.player1}</b>
+      </span>
+      {mode === "pvp" ? (
+        <span style={{ marginLeft: 16 }}>
+          {playerNames?.player2 || "Jogador 2"}: <b>{score.player2}</b>
+        </span>
+      ) : (
+        <span style={{ marginLeft: 16 }}>
+          {playerNames?.player2 || "Computador"}: <b>{score.cpu}</b>
+        </span>
       )}
     </div>
   );

@@ -1,8 +1,12 @@
 .board {
   display: grid;
-  grid-template-columns: repeat(7, 50px);
-  grid-template-rows: repeat(6, 50px);
-  gap: 5px;
+  grid-template-columns: repeat(7, 54px);
+  grid-template-rows: repeat(6, 54px);
+  gap: 7px;
   justify-content: center;
-  margin: 20px auto;
+  margin: 24px auto 12px auto;
+  background: linear-gradient(135deg, #3b82f6 70%, #2563eb 100%);
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgba(37,99,235,0.18);
+  padding: 18px 10px 10px 10px;
 }

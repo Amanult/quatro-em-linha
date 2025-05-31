@@ -1,20 +1,85 @@
 .cell {
+    /* Célula base com fundo suave, borda azul e transições */
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 2px solid #333;
+    border: 2.5px solid #2563eb;
     cursor: pointer;
-    background-color: white;
+    background: linear-gradient(145deg, #f1f5f9 60%, #e0e7ef 100%);
+    box-shadow: 0 2px 8px rgba(30,41,59,0.10);
+    transition: transform 0.12s, box-shadow 0.12s, background 0.3s, border-color 0.3s, opacity 0.2s;
+  }
+  
+  .cell:hover {
+    /* Efeito de hover na célula */
+    transform: scale(1.08);
+    box-shadow: 0 4px 16px rgba(30,41,59,0.18);
   }
   
   .cell.red {
-    background-color: red;
+    /* Peça do jogador 1 (vermelho) com gradiente suave */
+    background: radial-gradient(circle at 60% 40%, #f87171 70%, #be123c 100%);
+    border-color: #be123c;
+    transition: background 0.3s, border-color 0.3s;
   }
   
   .cell.yellow {
-    background-color: yellow;
+    /* Peça do jogador 2 (amarelo) com gradiente suave */
+    background: radial-gradient(circle at 60% 40%, #fde047 70%, #fbbf24 100%);
+    border-color: #fbbf24;
+    transition: background 0.3s, border-color 0.3s;
   }
   
   .cell.special {
-    box-shadow: 0 0 0 3px blue inset;
+    /* Célula especial com outline e sombra azul */
+    box-shadow: 0 0 0 5px #2563eb inset, 0 0 12px 2px #60a5fa;
+    outline: 2px dashed #2563eb;
+    outline-offset: 2px;
+    transition: box-shadow 0.2s, outline 0.2s;
+  }
+  
+  .cell.falling {
+    /* Animação de queda da peça */
+    animation: fall 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  
+  @keyframes fall {
+    0% {
+      transform: translateY(-220px) scale(0.7);
+      opacity: 0.7;
+    }
+    80% {
+      transform: translateY(10px) scale(1.05);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .cell.winning {
+    /* Animação de destaque para as peças vencedoras */
+    animation: winner-blink 0.7s linear infinite alternate;
+    box-shadow: 0 0 0 6px #facc15, 0 0 16px 4px #fde047;
+    z-index: 2;
+    transition: box-shadow 0.3s, filter 0.3s;
+  }
+  
+  @keyframes winner-blink {
+    0% {
+      filter: brightness(1.2) drop-shadow(0 0 8px #fde047);
+      box-shadow: 0 0 0 6px #facc15, 0 0 16px 4px #fde047;
+    }
+    100% {
+      filter: brightness(1.7) drop-shadow(0 0 18px #fde047);
+      box-shadow: 0 0 0 10px #fde047, 0 0 24px 8px #facc15;
+    }
+  }
+  
+  .cell.hover {
+    /* Efeito visual na célula onde a peça vai cair (hover de coluna) */
+    box-shadow: 0 0 0 4px #2563eb, 0 0 12px 2px #60a5fa;
+    opacity: 0.85;
+    transition: box-shadow 0.15s, opacity 0.15s;
   }
