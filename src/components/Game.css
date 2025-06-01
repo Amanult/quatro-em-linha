@@ -1,75 +1,101 @@
+/* Container principal do jogo, define o layout e o fundo */
 .game-container {
-  /* Container principal do jogo, fundo suave e transições */
+  /* Centraliza o conteúdo e define espaçamento interno */
   text-align: center;
   padding: 32px 20px 20px 20px;
-  background: rgba(248, 250, 252, 0.97); /* cor de fundo mais suave */
+  /* Fundo branco quase opaco para destacar o jogo */
+  background: rgba(248, 250, 252, 0.97);
+  /* Bordas arredondadas para suavizar o visual */
   border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15), 0 1.5px 6px rgba(0,0,0,0.08);
+  /* Sombra dupla para dar profundidade ao container */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 1.5px 6px rgba(0, 0, 0, 0.08);
+  /* Largura máxima para não ocupar toda a tela */
   max-width: 480px;
+  /* Centraliza verticalmente com margem superior */
   margin: 40px auto;
+  /* Transições suaves para mudanças de fundo e sombra */
   transition: background 0.3s, box-shadow 0.3s;
 }
 
+/* Estilo do título do jogo */
 .game-container h1 {
-  /* Título com cor azul consistente e transição */
+  /* Tamanho grande para destaque */
   font-size: 2.2rem;
-  color: #2563eb; /* azul consistente */
+  /* Cor azul consistente com o tema */
+  color: #2563eb;
+  /* Espaçamento inferior */
   margin-bottom: 10px;
+  /* Espaçamento entre letras */
   letter-spacing: 1px;
+  /* Transição suave para cor */
   transition: color 0.3s;
 }
 
+/* Estilo dos textos informativos */
 .game-container p {
-  /* Texto informativo com cor suave */
+  /* Tamanho de fonte médio */
   font-size: 1.1rem;
-  color: #334155; /* cinza-azulado suave */
+  /* Cor cinza-azulada suave */
+  color: #334155;
+  /* Margem vertical */
   margin: 8px 0;
+  /* Transição suave para cor */
   transition: color 0.3s;
 }
 
-.reset-button, .back-button {
-  /* Botões principais com transições suaves */
-  padding: 12px 28px;
-  margin-top: 18px;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  border: none;
-  font-weight: 600;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s, color 0.2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-}
-
-.reset-button {
-  /* Botão de reset azul claro */
-  background-color: #38bdf8; /* azul claro */
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(56,189,248,0.10);
-}
-
-.reset-button:hover {
-  /* Hover do botão de reset */
-  background-color: #0ea5e9; /* azul mais escuro */
-  color: #fff;
-  transform: translateY(-2px) scale(1.04);
-}
-
+/* Estilo dos botões principais (reset e voltar) */
+.reset-button,
 .back-button {
-  /* Botão de voltar vermelho suave */
-  background-color: #f87171; /* vermelho suave */
-  color: #fff;
-  margin-left: 14px;
-  box-shadow: 0 2px 8px rgba(248,113,113,0.10);
+  /* Padding generoso para facilitar o clique */
+  padding: 12px 28px;
+  /* Margem superior para afastar dos outros elementos */
+  margin-top: 18px;
+  /* Tamanho de fonte médio */
+  font-size: 1.1rem;
+  /* Bordas arredondadas */
+  border-radius: 8px;
+  /* Remove borda padrão */
+  border: none;
+  /* Texto em negrito */
+  font-weight: 600;
+  /* Transições suaves para efeitos visuais */
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s, color 0.2s;
+  /* Sombra leve para dar profundidade */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
 }
 
-.back-button:hover {
-  /* Hover do botão de voltar */
-  background-color: #ef4444; /* vermelho mais forte */
+/* Botão de reset (jogar novamente) com cor azul clara */
+.reset-button {
+  background-color: #38bdf8;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.1);
+}
+
+/* Efeito hover para o botão de reset */
+.reset-button:hover {
+  background-color: #0ea5e9;
   color: #fff;
   transform: translateY(-2px) scale(1.04);
 }
 
+/* Botão de voltar ao início com cor vermelha suave */
+.back-button {
+  background-color: #f87171;
+  color: #fff;
+  /* Margem à esquerda para separar do botão de reset */
+  margin-left: 14px;
+  box-shadow: 0 2px 8px rgba(248, 113, 113, 0.1);
+}
+
+/* Efeito hover para o botão de voltar */
+.back-button:hover {
+  background-color: #ef4444;
+  color: #fff;
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* Container da aplicação, centraliza todo o conteúdo na tela */
 .app-container {
-  /* Container da aplicação, centraliza tudo */
   background: none;
   min-height: 100vh;
   display: flex;
@@ -77,70 +103,104 @@
   justify-content: center;
 }
 
+/* Container da barra de tempo (timer) */
 .timer-bar-container {
-  /* Barra de tempo com fundo suave e transição */
+  /* Largura relativa ao container */
   width: 80%;
+  /* Altura da barra */
   height: 12px;
-  background: #e0e7ef; /* tom mais suave */
+  /* Fundo suave para a barra */
+  background: #e0e7ef;
+  /* Bordas arredondadas */
   border-radius: 8px;
+  /* Centraliza horizontalmente e adiciona margem inferior */
   margin: 0 auto 8px auto;
+  /* Esconde o excesso da barra de progresso */
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(37,99,235,0.08);
+  /* Sombra leve azul */
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.08);
+  /* Transição suave para mudanças de fundo */
   transition: background 0.3s;
 }
 
+/* Barra de progresso do timer */
 .timer-bar {
-  /* Barra de progresso animada */
+  /* Altura total do container */
   height: 100%;
+  /* Transições suaves para largura e cor */
   transition: width 0.3s, background 0.3s;
+  /* Bordas arredondadas */
   border-radius: 8px;
+  /* Gradiente azul para indicar progresso */
   background: linear-gradient(90deg, #38bdf8 60%, #2563eb 100%);
 }
 
+/* Estilo do placar (score-board) */
 .score-board {
-  /* ScoreBoard com fundo suave, azul e destaque */
+  /* Usa flex para alinhar os scores lado a lado */
   display: flex;
   justify-content: center;
   align-items: center;
+  /* Espaçamento entre os scores */
   gap: 24px;
+  /* Tamanho de fonte médio */
   font-size: 1.15rem;
+  /* Margem inferior para afastar do tabuleiro */
   margin-bottom: 10px;
+  /* Cor azul para destaque */
   color: #2563eb;
+  /* Texto em negrito */
   font-weight: 600;
+  /* Fundo suave azul */
   background: #e0e7ef;
+  /* Bordas arredondadas */
   border-radius: 8px;
+  /* Padding vertical para dar espaço interno */
   padding: 8px 0 6px 0;
-  box-shadow: 0 1px 4px rgba(37,99,235,0.08);
+  /* Sombra leve azul */
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.08);
 }
 
+/* Pop-up centralizado para aviso de tempo esgotado */
 .timeout-popup {
-  /* Pop-up centralizado para aviso de tempo esgotado.
-     - Fundo amarelo claro.
-     - Borda amarela.
-     - Texto vermelho escuro.
-     - Padding generoso e bordas arredondadas.
-     - Sombra para destacar.
-     - Z-index elevado para aparecer acima de tudo.
-     - Animação de fade-in para suavidade.
-  */
+  /* Fixa o pop-up no centro da tela */
   position: fixed;
   top: 50%;
   left: 50%;
+  /* Centraliza usando transform */
   transform: translate(-50%, -50%);
+  /* Fundo amarelo claro */
   background: #fef9c3;
+  /* Cor do texto vermelho escuro */
   color: #b91c1c;
+  /* Borda amarela */
   border: 2px solid #facc15;
+  /* Bordas arredondadas */
   border-radius: 14px;
+  /* Padding generoso para destacar o pop-up */
   padding: 32px 38px;
+  /* Tamanho de fonte grande */
   font-size: 1.25rem;
+  /* Texto em negrito */
   font-weight: 600;
-  box-shadow: 0 6px 32px rgba(0,0,0,0.18);
+  /* Sombra forte para destacar acima de tudo */
+  box-shadow: 0 6px 32px rgba(0, 0, 0, 0.18);
+  /* Garante que o pop-up fique acima dos outros elementos */
   z-index: 1000;
+  /* Centraliza o texto */
   text-align: center;
+  /* Animação de fade-in para suavidade */
   animation: popup-fade-in 0.2s;
 }
 
+/* Keyframes para animação de fade-in do pop-up */
 @keyframes popup-fade-in {
-  from { opacity: 0; transform: translate(-50%, -60%);}
-  to { opacity: 1; transform: translate(-50%, -50%);}
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }

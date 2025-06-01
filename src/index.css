@@ -1,15 +1,24 @@
+/* Estilo global do body da aplicação */
 body {
+  /* Remove margens padrão do navegador */
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  /* Define uma família de fontes moderna e consistente */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+  /* Suaviza as fontes em sistemas Apple */
   -webkit-font-smoothing: antialiased;
+  /* Suaviza as fontes em sistemas Mozilla */
   -moz-osx-font-smoothing: grayscale;
+  /* Fundo com gradiente azul-claro para dar leveza à aplicação */
   background: linear-gradient(135deg, #e0e7ff 0%, #f8fafc 100%);
+  /* Garante que o fundo ocupe toda a altura da janela */
   min-height: 100vh;
 }
 
+/* Estilo para elementos <code> */
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  /* Usa uma fonte monoespaçada para destacar código */
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }

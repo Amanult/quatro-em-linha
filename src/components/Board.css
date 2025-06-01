@@ -1,12 +1,23 @@
+/* Define o estilo do tabuleiro do jogo (grelha) */
 .board {
+  /* Usa grid para organizar as células em linhas e colunas */
   display: grid;
+  /* Define 7 colunas de 54px cada (para 7 colunas do jogo) */
   grid-template-columns: repeat(7, 54px);
+  /* Define 6 linhas de 54px cada (para 6 linhas do jogo) */
   grid-template-rows: repeat(6, 54px);
+  /* Espaçamento entre as células */
   gap: 7px;
+  /* Centraliza o tabuleiro horizontalmente */
   justify-content: center;
+  /* Margem superior e inferior para afastar o tabuleiro dos outros elementos */
   margin: 24px auto 12px auto;
+  /* Fundo com gradiente azul para dar destaque ao tabuleiro */
   background: linear-gradient(135deg, #3b82f6 70%, #2563eb 100%);
+  /* Bordas arredondadas para suavizar os cantos do tabuleiro */
   border-radius: 18px;
-  box-shadow: 0 4px 18px rgba(37,99,235,0.18);
+  /* Sombra azul para dar profundidade ao tabuleiro */
+  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.18);
+  /* Espaçamento interno para afastar as células das bordas do tabuleiro */
   padding: 18px 10px 10px 10px;
 }

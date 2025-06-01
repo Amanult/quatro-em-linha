@@ -1,101 +1,176 @@
+/* Container principal do ecrã inicial */
 .start-screen {
+  /* Centraliza o texto */
   text-align: center;
+  /* Espaçamento interno generoso */
   padding: 36px 20px;
-  background: rgba(255,255,255,0.97);
+  /* Fundo branco quase opaco para destacar o menu */
+  background: rgba(255, 255, 255, 0.97);
+  /* Bordas arredondadas */
   border-radius: 20px;
-  box-shadow: 0 6px 24px rgba(59,130,246,0.13);
+  /* Sombra azul suave para dar profundidade */
+  box-shadow: 0 6px 24px rgba(59, 130, 246, 0.13);
+  /* Largura máxima para não ocupar toda a tela */
   max-width: 420px;
+  /* Centraliza verticalmente com margem superior */
   margin: 60px auto;
 }
 
+/* Estilo do título do ecrã inicial */
 .start-screen h1 {
+  /* Tamanho grande para destaque */
   font-size: 2.3rem;
+  /* Espaçamento inferior */
   margin-bottom: 26px;
+  /* Cor azul consistente com o tema */
   color: #2563eb;
+  /* Espaçamento entre letras */
   letter-spacing: 1px;
 }
 
+/* Grupo de botões de seleção de modo */
 .mode-select-group {
+  /* Usa flex para alinhar os botões lado a lado */
   display: flex;
   justify-content: center;
+  /* Espaçamento entre os botões */
   gap: 16px;
+  /* Margem inferior para afastar dos inputs */
   margin-bottom: 24px;
 }
 
+/* Botões de seleção de modo (PvP ou CPU) */
 .mode-select-btn {
+  /* Padding generoso para facilitar o clique */
   padding: 12px 24px;
+  /* Tamanho de fonte médio */
   font-size: 1.05rem;
+  /* Fundo azul */
   background-color: #2563eb;
+  /* Cor do texto branca */
   color: white;
+  /* Remove borda padrão */
   border: none;
+  /* Bordas arredondadas */
   border-radius: 8px;
+  /* Cursor pointer para indicar que é clicável */
   cursor: pointer;
+  /* Texto em negrito */
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+  /* Sombra azul suave */
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  /* Transições suaves para efeitos visuais */
   transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
   outline: none;
 }
 
+/* Efeito hover e focus para os botões de modo */
 .mode-select-btn:hover,
 .mode-select-btn:focus {
+  /* Fundo azul mais escuro */
   background-color: #1d4ed8;
+  /* Aumenta ligeiramente o tamanho */
   transform: translateY(-2px) scale(1.04);
 }
 
+/* Botão de modo selecionado (opcional, para realce visual) */
 .mode-select-btn.selected {
+  /* Fundo azul claro */
   background-color: #38bdf8;
+  /* Cor do texto azul escuro */
   color: #1e293b;
-  box-shadow: 0 4px 16px rgba(56,189,248,0.13);
+  /* Sombra azul clara */
+  box-shadow: 0 4px 16px rgba(56, 189, 248, 0.13);
 }
 
+/* Estilo geral dos botões do ecrã inicial */
 .start-screen button {
+  /* Padding generoso */
   padding: 12px 32px;
+  /* Tamanho de fonte médio */
   font-size: 1.1rem;
+  /* Fundo azul */
   background-color: #2563eb;
+  /* Cor do texto branca */
   color: white;
+  /* Remove borda padrão */
   border: none;
+  /* Bordas arredondadas */
   border-radius: 8px;
+  /* Cursor pointer */
   cursor: pointer;
+  /* Texto em negrito */
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(37,99,235,0.10);
+  /* Sombra azul suave */
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+  /* Transições suaves para efeitos visuais */
   transition: background 0.2s, transform 0.2s;
 }
 
+/* Efeito hover para os botões do ecrã inicial */
 .start-screen button:hover {
+  /* Fundo azul mais escuro */
   background-color: #1d4ed8;
+  /* Aumenta ligeiramente o tamanho */
   transform: translateY(-2px) scale(1.04);
 }
 
+/* Estilo dos inputs para nomes dos jogadores */
 .player-name-input {
+  /* Padding interno para conforto na escrita */
   padding: 10px 16px;
+  /* Tamanho de fonte padrão */
   font-size: 1rem;
+  /* Bordas arredondadas */
   border-radius: 7px;
+  /* Borda azul para destacar o input */
   border: 1.5px solid #2563eb;
+  /* Margem inferior para separar dos botões */
   margin-bottom: 6px;
+  /* Remove outline padrão */
   outline: none;
+  /* Transição suave para borda */
   transition: border 0.2s;
+  /* Largura fixa para uniformidade */
   width: 160px;
+  /* Garante que o padding não aumente o tamanho total */
   box-sizing: border-box;
 }
 
+/* Efeito focus para o input de nome */
 .player-name-input:focus {
+  /* Borda azul clara ao focar */
   border: 1.5px solid #38bdf8;
 }
 
+/* Botão de voltar ao menu de seleção de modo */
 .back-mode-btn {
+  /* Padding generoso */
   padding: 12px 32px;
+  /* Tamanho de fonte médio */
   font-size: 1.1rem;
+  /* Fundo vermelho claro */
   background-color: #f87171;
+  /* Cor do texto branca */
   color: white;
+  /* Remove borda padrão */
   border: none;
+  /* Bordas arredondadas */
   border-radius: 8px;
+  /* Cursor pointer */
   cursor: pointer;
+  /* Texto em negrito */
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(248,113,113,0.10);
+  /* Sombra vermelha suave */
+  box-shadow: 0 2px 8px rgba(248, 113, 113, 0.1);
+  /* Transições suaves para efeitos visuais */
   transition: background 0.2s, transform 0.2s;
 }
 
+/* Efeito hover para o botão de voltar */
 .back-mode-btn:hover {
+  /* Fundo vermelho mais escuro */
   background-color: #ef4444;
+  /* Aumenta ligeiramente o tamanho */
   transform: translateY(-2px) scale(1.04);
 }

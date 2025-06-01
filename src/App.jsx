@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import Game from "./components/Game";
-import StartScreen from "./components/StartScreen";
+import React, { useState } from "react"; // Importa React e o hook useState
+import Game from "./components/Game"; // Importa o componente do jogo
+import StartScreen from "./components/StartScreen"; // Importa o componente do ecrã inicial
 
+// Componente principal da aplicação
 export default function App() {
   // Estado para saber se o jogo já começou
   const [gameStarted, setGameStarted] = useState(false);
-  // Estado para guardar o modo de jogo (pvp ou cpu)
+  // Estado para guardar o modo de jogo selecionado (pvp ou cpu)
   const [gameMode, setGameMode] = useState("pvp");
   // Estado para guardar o score dos jogadores e do computador
   const [score, setScore] = useState({ player1: 0, player2: 0, cpu: 0 });
@@ -15,7 +16,7 @@ export default function App() {
     player2: "Jogador 2",
   });
 
-  // Função para voltar ao ecrã inicial
+  // Função para voltar ao ecrã inicial (define gameStarted como false)
   const resetToStart = () => setGameStarted(false);
 
   // Função chamada quando alguém vence, para atualizar o score
@@ -23,15 +24,17 @@ export default function App() {
     if (winner === 1) setScore((s) => ({ ...s, player1: s.player1 + 1 }));
     if (winner === 2 && mode === "pvp")
       setScore((s) => ({ ...s, player2: s.player2 + 1 }));
-    if (winner === 2 && mode === "cpu") setScore((s) => ({ ...s, cpu: s.cpu + 1 }));
+    if (winner === 2 && mode === "cpu")
+      setScore((s) => ({ ...s, cpu: s.cpu + 1 }));
   };
 
+  // Renderização do componente principal
   return (
     <div className="app-container">
-      {/* Mostra o ecrã inicial ou o jogo conforme o estado */}
+      {/* Se o jogo ainda não começou, mostra o ecrã inicial */}
       {!gameStarted ? (
         <StartScreen
-          // Passa função para iniciar o jogo e guardar o modo e nomes escolhidos
+          // Função chamada ao iniciar o jogo, guarda modo e nomes escolhidos
           onStart={({ mode, player1, player2 }) => {
             setGameMode(mode);
             setPlayerNames({ player1, player2 });
@@ -39,12 +42,13 @@ export default function App() {
           }}
         />
       ) : (
+        // Se o jogo começou, mostra o componente do jogo
         <Game
           onBackToStart={resetToStart}
-          mode={gameMode} // Passa o modo selecionado
-          score={score} // Passa o score atual
-          onGameEnd={handleGameEnd} // Passa função para atualizar score
-          playerNames={playerNames} // Passa os nomes dos jogadores
+          mode={gameMode}
+          score={score}
+          onGameEnd={handleGameEnd}
+          playerNames={playerNames}
         />
       )}
     </div>

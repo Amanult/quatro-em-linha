@@ -1,89 +1,120 @@
+/* Define o estilo base da célula do tabuleiro */
 .cell {
-    /* Célula base com fundo suave, borda azul e transições */
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2.5px solid #2563eb;
-    cursor: pointer;
-    background: linear-gradient(145deg, #f1f5f9 60%, #e0e7ef 100%);
-    box-shadow: 0 2px 8px rgba(30,41,59,0.10);
-    transition: transform 0.12s, box-shadow 0.12s, background 0.3s, border-color 0.3s, opacity 0.2s;
+  /* Largura e altura fixas para garantir células quadradas e uniformes */
+  width: 50px;
+  height: 50px;
+  /* Bordas arredondadas para criar o formato circular das peças */
+  border-radius: 50%;
+  /* Borda azul para destacar cada célula */
+  border: 2.5px solid #2563eb;
+  /* Cursor pointer para indicar que a célula é clicável */
+  cursor: pointer;
+  /* Fundo com gradiente suave para dar profundidade à célula vazia */
+  background: linear-gradient(145deg, #f1f5f9 60%, #e0e7ef 100%);
+  /* Sombra leve para dar efeito de elevação */
+  box-shadow: 0 2px 8px rgba(30, 41, 59, 0.1);
+  /* Transições suaves para animações e efeitos visuais */
+  transition: transform 0.12s, box-shadow 0.12s, background 0.3s,
+    border-color 0.3s, opacity 0.2s;
+}
+
+/* Efeito visual ao passar o rato sobre a célula */
+.cell:hover {
+  /* Aumenta ligeiramente o tamanho da célula */
+  transform: scale(1.08);
+  /* Sombra mais forte para destacar a célula */
+  box-shadow: 0 4px 16px rgba(30, 41, 59, 0.18);
+}
+
+/* Estilo para a peça do jogador 1 (vermelho) */
+.cell.red {
+  /* Gradiente radial para simular profundidade e brilho na peça vermelha */
+  background: radial-gradient(circle at 60% 40%, #f87171 70%, #be123c 100%);
+  /* Borda vermelha escura para combinar com o tema da peça */
+  border-color: #be123c;
+  /* Transições suaves para mudanças de cor */
+  transition: background 0.3s, border-color 0.3s;
+}
+
+/* Estilo para a peça do jogador 2 (amarelo) */
+.cell.yellow {
+  /* Gradiente radial para simular profundidade e brilho na peça amarela */
+  background: radial-gradient(circle at 60% 40%, #fde047 70%, #fbbf24 100%);
+  /* Borda amarela escura para combinar com o tema da peça */
+  border-color: #fbbf24;
+  /* Transições suaves para mudanças de cor */
+  transition: background 0.3s, border-color 0.3s;
+}
+
+/* Estilo para células especiais do tabuleiro */
+.cell.special {
+  /* Sombra interna e externa verde para destacar a célula especial */
+  box-shadow: 0 0 0 5px #22c55e inset, 0 0 12px 2px #4ade80;
+  /* Contorno tracejado verde para reforçar o destaque */
+  outline: 2px dashed #22c55e;
+  /* Espaçamento do contorno em relação à célula */
+  outline-offset: 2px;
+  /* Transições suaves para efeitos visuais */
+  transition: box-shadow 0.2s, outline 0.2s;
+}
+
+/* Animação de queda da peça ao ser jogada */
+.cell.falling {
+  /* Aplica a animação definida abaixo */
+  animation: fall 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Keyframes para a animação de queda da peça */
+@keyframes fall {
+  0% {
+    /* Começa acima do tabuleiro, menor e semi-transparente */
+    transform: translateY(-220px) scale(0.7);
+    opacity: 0.7;
   }
-  
-  .cell:hover {
-    /* Efeito de hover na célula */
-    transform: scale(1.08);
-    box-shadow: 0 4px 16px rgba(30,41,59,0.18);
+  80% {
+    /* Passa um pouco do destino para dar efeito de bounce */
+    transform: translateY(10px) scale(1.05);
+    opacity: 1;
   }
-  
-  .cell.red {
-    /* Peça do jogador 1 (vermelho) com gradiente suave */
-    background: radial-gradient(circle at 60% 40%, #f87171 70%, #be123c 100%);
-    border-color: #be123c;
-    transition: background 0.3s, border-color 0.3s;
+  100% {
+    /* Termina na posição correta, tamanho normal e totalmente visível */
+    transform: translateY(0) scale(1);
+    opacity: 1;
   }
-  
-  .cell.yellow {
-    /* Peça do jogador 2 (amarelo) com gradiente suave */
-    background: radial-gradient(circle at 60% 40%, #fde047 70%, #fbbf24 100%);
-    border-color: #fbbf24;
-    transition: background 0.3s, border-color 0.3s;
-  }
-  
-  .cell.special {
-    /* Apenas contorno verde para distinguir célula especial.
-       - box-shadow e outline verdes.
-       - Não altera o fundo da célula, mantendo a ficha visível.
-       - Facilita a identificação visual das células especiais sem confundir com as peças dos jogadores.
-    */
-    box-shadow: 0 0 0 5px #22c55e inset, 0 0 12px 2px #4ade80;
-    outline: 2px dashed #22c55e;
-    outline-offset: 2px;
-    transition: box-shadow 0.2s, outline 0.2s;
-  }
-  
-  .cell.falling {
-    /* Animação de queda da peça */
-    animation: fall 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  
-  @keyframes fall {
-    0% {
-      transform: translateY(-220px) scale(0.7);
-      opacity: 0.7;
-    }
-    80% {
-      transform: translateY(10px) scale(1.05);
-      opacity: 1;
-    }
-    100% {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
-  }
-  
-  .cell.winning {
-    /* Animação de destaque para as peças vencedoras */
-    animation: winner-blink 0.7s linear infinite alternate;
+}
+
+/* Animação para destacar as peças vencedoras */
+.cell.winning {
+  /* Animação de piscar e brilho */
+  animation: winner-blink 0.7s linear infinite alternate;
+  /* Sombra dourada para destacar a peça */
+  box-shadow: 0 0 0 6px #facc15, 0 0 16px 4px #fde047;
+  /* Garante que a peça vencedora fique acima das outras */
+  z-index: 2;
+  /* Transições suaves para efeitos de destaque */
+  transition: box-shadow 0.3s, filter 0.3s;
+}
+
+/* Keyframes para o efeito de piscar das peças vencedoras */
+@keyframes winner-blink {
+  0% {
+    /* Brilho inicial e sombra dourada */
+    filter: brightness(1.2) drop-shadow(0 0 8px #fde047);
     box-shadow: 0 0 0 6px #facc15, 0 0 16px 4px #fde047;
-    z-index: 2;
-    transition: box-shadow 0.3s, filter 0.3s;
   }
-  
-  @keyframes winner-blink {
-    0% {
-      filter: brightness(1.2) drop-shadow(0 0 8px #fde047);
-      box-shadow: 0 0 0 6px #facc15, 0 0 16px 4px #fde047;
-    }
-    100% {
-      filter: brightness(1.7) drop-shadow(0 0 18px #fde047);
-      box-shadow: 0 0 0 10px #fde047, 0 0 24px 8px #facc15;
-    }
+  100% {
+    /* Brilho mais intenso e sombra maior */
+    filter: brightness(1.7) drop-shadow(0 0 18px #fde047);
+    box-shadow: 0 0 0 10px #fde047, 0 0 24px 8px #facc15;
   }
-  
-  .cell.hover {
-    /* Efeito visual na célula onde a peça vai cair (hover de coluna) */
-    box-shadow: 0 0 0 4px #2563eb, 0 0 12px 2px #60a5fa;
-    opacity: 0.85;
-    transition: box-shadow 0.15s, opacity 0.15s;
-  }
+}
+
+/* Efeito visual na célula onde a peça vai cair (hover de coluna) */
+.cell.hover {
+  /* Sombra azul para indicar a coluna selecionada */
+  box-shadow: 0 0 0 4px #2563eb, 0 0 12px 2px #60a5fa;
+  /* Torna a célula um pouco mais transparente */
+  opacity: 0.85;
+  /* Transições suaves para o efeito de hover */
+  transition: box-shadow 0.15s, opacity 0.15s;
+}
