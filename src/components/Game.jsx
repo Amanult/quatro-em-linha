@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Board from "./Board";
+import ScoreBoard from "./ScoreBoard";
 import "./Game.css";
 
 // Constantes para definir o número de linhas, colunas e o tempo máximo por jogada
@@ -37,7 +38,13 @@ const isBoardFull = (board) =>
   board.every((row) => row.every((cell) => cell !== null));
 
 // Componente principal do jogo
-export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, playerNames }) {
+export default function Game({
+  onBackToStart,
+  mode = "pvp",
+  score,
+  onGameEnd,
+  playerNames,
+}) {
   // Estados para armazenar o tabuleiro, jogador atual, vencedor, células especiais, etc.
   const [board, setBoard] = useState(createEmptyBoard());
   // ALTERAÇÃO: O primeiro jogador é agora escolhido aleatoriamente ao iniciar o componente
@@ -136,7 +143,7 @@ export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, pl
     // Escolher uma coluna aleatória e jogar
     const randomCol = validCols[Math.floor(Math.random() * validCols.length)];
     handleClick(randomCol, true); // true = isComputer
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [board, winner, skipTurn]);
 
   // handleClick modificado para bloquear jogadas durante aviso de tempo
@@ -236,17 +243,23 @@ export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, pl
             ? "O jogo terminou em empate!"
             : mode === "cpu" && winner === 2
             ? `${playerNames?.player2 || "Computador"} venceu!`
-            : `${winner === 1 ? playerNames?.player1 : playerNames?.player2} venceu!`
+            : `${
+                winner === 1 ? playerNames?.player1 : playerNames?.player2
+              } venceu!`
           : mode === "cpu"
           ? player === 1
             ? `A tua vez!`
             : `Vez do ${playerNames?.player2 || "Computador"}...`
-          : `Vez de ${player === 1 ? playerNames?.player1 : playerNames?.player2}`}
+          : `Vez de ${
+              player === 1 ? playerNames?.player1 : playerNames?.player2
+            }`}
       </p>
       {/* Aviso pop-up de tempo esgotado */}
       {showTimeoutMsg && (
         <div className="timeout-popup">
-          <span>⏰ Tempo esgotado! A vez vai passar para o próximo jogador...</span>
+          <span>
+            ⏰ Tempo esgotado! A vez vai passar para o próximo jogador...
+          </span>
         </div>
       )}
       {/* Barra de tempo animada */}
@@ -279,26 +292,6 @@ export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, pl
             Voltar ao Início
           </button>
         </div>
-      )}
-    </div>
-  );
-}
-
-// ScoreBoard Component: mostra o score dos jogadores ou do computador
-function ScoreBoard({ score, mode, playerNames }) {
-  return (
-    <div className="score-board">
-      <span>
-        {playerNames?.player1 || "Jogador 1"}: <b>{score.player1}</b>
-      </span>
-      {mode === "pvp" ? (
-        <span style={{ marginLeft: 16 }}>
-          {playerNames?.player2 || "Jogador 2"}: <b>{score.player2}</b>
-        </span>
-      ) : (
-        <span style={{ marginLeft: 16 }}>
-          {playerNames?.player2 || "Computador"}: <b>{score.cpu}</b>
-        </span>
       )}
     </div>
   );
