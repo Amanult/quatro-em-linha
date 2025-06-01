@@ -40,7 +40,8 @@ const isBoardFull = (board) =>
 export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, playerNames }) {
   // Estados para armazenar o tabuleiro, jogador atual, vencedor, células especiais, etc.
   const [board, setBoard] = useState(createEmptyBoard());
-  const [player, setPlayer] = useState(1);
+  // ALTERAÇÃO: O primeiro jogador é agora escolhido aleatoriamente ao iniciar o componente
+  const [player, setPlayer] = useState(() => (Math.random() < 0.5 ? 1 : 2));
   const [winner, setWinner] = useState(null);
   const [specialCells, setSpecialCells] = useState(generateSpecialCells());
   const [timer, setTimer] = useState(0);
@@ -54,7 +55,7 @@ export default function Game({ onBackToStart, mode = "pvp", score, onGameEnd, pl
   // Função para reiniciar o jogo e resetar todos os estados relevantes
   const resetGame = () => {
     setBoard(createEmptyBoard());
-    setPlayer(1);
+    setPlayer(Math.random() < 0.5 ? 1 : 2); // ALTERAÇÃO: Ao reiniciar, o próximo a começar é escolhido aleatoriamente
     setWinner(null);
     setSpecialCells(generateSpecialCells());
     setTimer(0);
